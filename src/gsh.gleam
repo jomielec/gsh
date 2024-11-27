@@ -2,9 +2,9 @@ import gleam/erlang
 import gleam/erlang/process
 import gleam/int
 import gleam/io
-import gleam/list
 import gleam/string
 import gleam_community/ansi
+import error
 
 pub fn main() {
   // Start the interactive loop with an initial exit code
@@ -35,7 +35,7 @@ fn loop(error_code: String) {
 
   case error_code {
     0 -> io.print("")
-    _ -> generate_error(user_input, error_code)
+    _ -> error.handle_error(user_input, error_code)
   }
 
   let internal_exit_string: String = case error_code {
@@ -53,27 +53,6 @@ fn loop(error_code: String) {
     False -> io.println("")
     // count_down(error_code)
   }
-}
-
-// Custom functions
-pub fn generate_error(user_input: String, error_code: Int) {
-  let command = case list.first(string.split(user_input, " ")) {
-    Ok(item) -> item
-    Error(_) -> ""
-  }
-
-  let error_message: String = case error_code {
-    0 -> "ur mom"
-    1 -> "Unknown Command"
-    _ -> "Error " <> int.to_string(error_code)
-  }
-  io.println("\u{256D} " <> ansi.red(error_message) <> " \u{256E}")
-  io.println(
-    "\u{254E} |> "
-    <> string.pad_end(command, string.length(error_message), " ")
-    <> "\u{254E}",
-  )
-  io.println(ansi.red("     \u{2500}\u{2500}\u{2500}\u{2500}"))
 }
 
 pub fn count_down(error_code: Int) {
