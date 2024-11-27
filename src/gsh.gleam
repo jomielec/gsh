@@ -10,9 +10,9 @@ pub fn count_down(code) {
   process.sleep(1000)
   io.print("Exiting in 2\r")
   process.sleep(1000)
-  io.print("Exiting in 1\r")
+  io.println("Exiting in 1")
   process.sleep(1000)
-  io.print("Exited with code ")
+  io.print("Exited with code: ")
   io.debug(code)
 }
 pub fn main() {
