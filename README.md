@@ -1,4 +1,12 @@
 # Gleam Style sHell
+## Contributing
+Please make sure these commands run succesfully before commiting
+```sh
+gleam run
+gleam test
+gleam format
+gleam format --check
+```
 
 <!--
 # gsh
