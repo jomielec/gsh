@@ -5,15 +5,18 @@ import gleam/io
 import gleam/string
 import gleam_community/ansi
 
-pub fn count_down(code) {
-  io.print("Exiting in 3\r")
+pub fn count_down(exit_code: Int) {
+  io.print(ansi.cyan("Exiting in 3\r"))
   process.sleep(1000)
-  io.print("Exiting in 2\r")
+  io.print(ansi.cyan("Exiting in 2\r"))
   process.sleep(1000)
-  io.print("Exiting in 1")
+  io.print(ansi.cyan("Exiting in 1\r"))
   process.sleep(1000)
-  io.print("\nExited with code: ")
-  io.debug(code)
+  case exit_code {
+    0 ->
+      io.println(ansi.green("Exited with code: " <> int.to_string(exit_code)))
+    _ -> io.println(ansi.red("Exited with code: " <> int.to_string(exit_code)))
+  }
 }
 
 pub fn main() {
@@ -21,14 +24,14 @@ pub fn main() {
   main_loop(ansi.green("0"))
 }
 
-fn main_loop(exitcode: String) {
+fn main_loop(exit_code: String) {
   let prompt =
     ansi.green("user")
     <> "@"
-    <> ansi.blue("gsh")
+    <> ansi.cyan("gsh")
     <> ansi.red(" /home/")
     <> " >| "
-    <> exitcode
+    <> exit_code
     <> " |> "
 
   let user_input = case erlang.get_line(prompt) {
@@ -55,6 +58,6 @@ fn main_loop(exitcode: String) {
 
   case continue_loop {
     True -> main_loop(internal_exit_string)
-    False -> count_down(0)
+    False -> count_down(exit_code)
   }
 }
