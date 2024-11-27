@@ -1,7 +1,7 @@
-import gleam/io
 import gleam/erlang
-import gleam/string
 import gleam/int
+import gleam/io
+import gleam/string
 import gleam_community/ansi
 
 pub fn main() {
