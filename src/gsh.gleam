@@ -1,10 +1,10 @@
+import error
 import gleam/erlang
 import gleam/erlang/process
 import gleam/int
 import gleam/io
 import gleam/string
 import gleam_community/ansi
-import error
 
 pub fn main() {
   // Start the interactive loop with an initial exit code
