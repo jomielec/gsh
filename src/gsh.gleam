@@ -21,10 +21,10 @@ pub fn count_down(exit_code: Int) {
 
 pub fn main() {
   // Start the interactive loop with an initial exit code
-  main_loop(ansi.green("0"))
+  loop(ansi.green("0"))
 }
 
-fn main_loop(exit_code: String) {
+fn loop(exit_code: String) {
   let prompt =
     ansi.green("user")
     <> "@"
@@ -57,7 +57,7 @@ fn main_loop(exit_code: String) {
   }
 
   case continue_loop {
-    True -> main_loop(internal_exit_string)
+    True -> loop(internal_exit_string)
     False -> count_down(exit_code)
   }
 }
