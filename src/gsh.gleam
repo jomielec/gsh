@@ -1,25 +1,25 @@
 import gleam/erlang
+import gleam/erlang/process
 import gleam/int
 import gleam/io
 import gleam/string
 import gleam_community/ansi
-import gleam/erlang/process
 
 pub fn count_down(code) {
   io.print("Exiting in 3\r")
   process.sleep(1000)
   io.print("Exiting in 2\r")
   process.sleep(1000)
-  io.println("Exiting in 1")
+  io.print("Exiting in 1")
   process.sleep(1000)
-  io.print("Exited with code: ")
+  io.print("\nExited with code: ")
   io.debug(code)
 }
+
 pub fn main() {
   // Start the interactive loop with an initial exit code
   main_loop("0")
 }
-
 
 fn main_loop(exitcode: String) {
   let prompt =
