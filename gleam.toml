@@ -15,6 +15,7 @@ version = "0.0.1"
 [dependencies]
 gleam_stdlib = ">= 0.34.0 and < 2.0.0"
 gleam_erlang = ">= 0.30.0 and < 1.0.0"
+gleam_community_ansi = ">= 1.4.1 and < 2.0.0"
 tom = ">= 1.1.0 and < 2.0.0"
 file_streams = ">= 1.2.2 and < 2.0.0"
 

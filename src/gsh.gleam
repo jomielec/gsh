@@ -1,16 +1,16 @@
-import gleam/int
-import color
-import gleam/erlang
 import gleam/io
+import gleam/erlang
 import gleam/string
+import gleam/int
+import gleam_community/ansi
 
 pub fn main() {
   let user_input: String = case
     erlang.get_line(
-      color.color_text("user", color.green)
+      ansi.green("user")
       <> "@"
-      <> color.color_text("gsh", color.blue)
-      <> color.color_text(" /home/", color.red)
+      <> ansi.blue("gsh")
+      <> ansi.red(" /home/")
       <> " >>> ",
     )
   {
@@ -20,13 +20,14 @@ pub fn main() {
 
   let exit_code = case user_input {
     "ls" -> 0
+    "clear" -> 0
     "exit" -> 0
     _ -> 1
   }
 
   let exit_string = case exit_code {
-    0 -> color.color_text(int.to_string(exit_code), color.green)
-    _ -> color.color_text(int.to_string(exit_code), color.red)
+    0 -> ansi.green(int.to_string(exit_code))
+    _ -> ansi.red(int.to_string(exit_code))
   }
 
   let loop = case user_input {
