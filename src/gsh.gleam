@@ -1,20 +1,38 @@
-import gleam/io
 import gleam/erlang
-import gleam/string
 import gleam/int
+import gleam/io
+import gleam/string
 import gleam_community/ansi
+import gleam/erlang/process
 
+pub fn count_down(code) {
+  io.print("Exiting in 3\r")
+  process.sleep(1000)
+  io.print("Exiting in 2\r")
+  process.sleep(1000)
+  io.print("Exiting in 1\r")
+  process.sleep(1000)
+  io.print("Exited with code ")
+  io.debug(code)
+}
 pub fn main() {
-  let user_input: String = case
-    erlang.get_line(
-      ansi.green("user")
-      <> "@"
-      <> ansi.blue("gsh")
-      <> ansi.red(" /home/")
-      <> " >>> ",
-    )
-  {
-    Ok(name) -> string.trim(name)
+  // Start the interactive loop with an initial exit code
+  main_loop("0")
+}
+
+
+fn main_loop(exitcode: String) {
+  let prompt =
+    ansi.green("user")
+    <> "@"
+    <> ansi.blue("gsh")
+    <> ansi.red(" /home/")
+    <> " >| "
+    <> exitcode
+    <> " |> "
+
+  let user_input = case erlang.get_line(prompt) {
+    Ok(input) -> string.trim(input)
     Error(_) -> ""
   }
 
@@ -25,20 +43,18 @@ pub fn main() {
     _ -> 1
   }
 
-  let exit_string = case exit_code {
+  let internal_exit_string = case exit_code {
     0 -> ansi.green(int.to_string(exit_code))
     _ -> ansi.red(int.to_string(exit_code))
   }
 
-  let loop = case user_input {
+  let continue_loop = case user_input {
     "exit" -> False
     _ -> True
   }
 
-  io.print(exit_string <> " ")
-
-  case loop {
-    True -> main()
-    False -> io.println("")
+  case continue_loop {
+    True -> main_loop(internal_exit_string)
+    False -> count_down(0)
   }
 }
