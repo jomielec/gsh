@@ -18,7 +18,7 @@ pub fn count_down(code) {
 
 pub fn main() {
   // Start the interactive loop with an initial exit code
-  main_loop("0")
+  main_loop(ansi.green("0"))
 }
 
 fn main_loop(exitcode: String) {
