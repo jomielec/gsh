@@ -52,7 +52,7 @@ pub fn main() !void {
     var iterator = dir.iterate(); // Get the iterator
 
     // Print the top of the table
-    std.debug.print("\u{256D}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\n\u{2502} Name:\n\u{251C}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\n", .{});
+    std.debug.print("\u{256D}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{256e}\n\u{2502} Name:         \u{2502}\n\u{251C}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2524}\n", .{});
 
     // Collect directory names
     while (true) {
@@ -86,5 +86,5 @@ pub fn main() !void {
     }
 
     // Print the bottom of the table
-    std.debug.print("\u{2570}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\n", .{});
+    std.debug.print("\u{2570}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{256F}\n", .{});
 }
