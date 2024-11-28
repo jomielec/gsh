@@ -6,7 +6,6 @@ import gleam/io
 import gleam/list
 import gleam/string
 import gleam_community/ansi
-import gshd
 
 pub fn main() {
   // Start the interactive loop with an initial exit code
