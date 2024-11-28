@@ -17,7 +17,7 @@ pub fn handle_error(command: String, error_code: Int) {
     command,
     colour.red,
     colour.red,
-    0,
+    1,
   ))
 }
 
@@ -39,17 +39,18 @@ fn generate_error_message(
   }
 
   // Set themes
-  
+
   // Modern theme
   let modern_theme =
-    "\u{256D}"
+    "\u{256D} "
     <> ansi.color(message, message_color)
+    <> " "
     <> string.pad_end("", to: length - message_length, with: "\u{2500}")
-    <> "\u{256E}\n\u{2502}"
+    <> "\u{256E}\n\u{2502} "
     <> ansi.underline(ansi.color(data, data_color))
     <> string.pad_end("", to: length - data_length, with: " ")
-    <> "\u{2502}\n\u{2570}"
-    <> string.pad_end("", to: length, with: "\u{2500}")
+    <> " \u{2502}\n\u{2570}"
+    <> string.pad_end("", to: length + 2, with: "\u{2500}")
     <> "\u{256F}"
 
   // Classic theme

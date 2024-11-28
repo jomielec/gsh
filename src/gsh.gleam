@@ -1,3 +1,4 @@
+import error
 import gleam/erlang
 import gleam/erlang/process
 import gleam/int
@@ -5,7 +6,7 @@ import gleam/io
 import gleam/list
 import gleam/string
 import gleam_community/ansi
-import error
+import gshd
 
 pub fn main() {
   // Start the interactive loop with an initial exit code
@@ -39,12 +40,11 @@ fn loop(error_code: String) {
 
   // Generate error codes
   let error_code: Int = case command {
-    "ls" -> 0
-    "exit" -> 0
+    "ls" | "exit" -> 0
     _ -> 1
   }
 
-  // Handle any errors
+  // Handle any errorsc
   case error_code {
     0 -> io.print("")
     _ -> error.handle_error(user_input, error_code)
