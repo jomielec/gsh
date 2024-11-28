@@ -4,13 +4,22 @@ import gleam/string
 import gleam_community/ansi
 import gleam_community/colour.{type Color}
 
+pub type Error {
+  InvalidCommand
+  UnknownError
+}
+
 pub fn handle_error(command: String, error_code: Int) {
   // Handle error codes
-  let error_message: String = case error_code {
-    1 -> "Unknown Command"
-    _ -> "Error " <> int.to_string(error_code)
+  let error_type: Error = case error_code {
+    1 -> InvalidCommand
+    _ -> UnknownError
   }
 
+  let error_message = case error_type {
+    InvalidCommand -> "Invalid Command"
+    UnknownError -> "Unknown Error"
+  }
   // Generate and print error message
   io.println(generate_error_message(
     error_message,
