@@ -46,7 +46,7 @@ pub fn main() !void {
     var directories = ArrayList([]const u8).init(Allocator);
 
     // Open the current directory explicitly with "."
-    var dir = try cwd.openDir("./", .{});
+    var dir = try cwd.openDir(".", .{ .iterate = true });
     defer dir.close();
 
     var iterator = dir.iterate(); // Get the iterator
@@ -55,11 +55,8 @@ pub fn main() !void {
     std.debug.print("\u{256D}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{256e}\n\u{2502} Name:         \u{2502}\n\u{251C}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2500}\u{2524}\n", .{});
 
     // Collect directory names
-    while (true) {
-        const entry = try iterator.next();
-        if (entry == null) break; // Exit loop if no more entries
-
-        try directories.append(entry.?.name); // Append the directory name
+    while (try iterator.next()) |entry| {
+        try directories.append(entry.name); // Append the directory name
     }
 
     // Find the maximum length of the directory names to properly align the table
