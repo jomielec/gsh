@@ -14,10 +14,10 @@ pub fn main() !void {
 
     var iterator = dir.iterate();
     while (try iterator.next()) |entry| {
-        if (entry.kind == std.fs.File.Kind.directory) {
-            try stdout.print("=> \x1b[32m{s}\x1b[0m\n", .{entry.name});
-        } else {
-            try stdout.print("=> \x1b[34m{s}\x1b[0m\n", .{entry.name});
+        switch (entry.kind) {
+            std.fs.File.Kind.directory => try stdout.print("=> \x1b[32m{s}\x1b[0m\n", .{entry.name}),
+            std.fs.File.Kind.sym_link => try stdout.print("=> \x1b[33m{s}\x1b[0m\n", .{entry.name}),
+            else => try stdout.print("=> \x1b[34m{s}\x1b[0m\n", .{entry.name}),
         }
     }
     try stdout.print("\n", .{});
