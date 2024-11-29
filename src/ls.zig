@@ -4,10 +4,15 @@ pub fn main() !void {
     const stdout_file = std.io.getStdOut().writer();
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
-
+    const to_list = ".";
     const cwd = std.fs.cwd();
+    const allocator = std.heap.page_allocator;
 
-    var dir = try cwd.openDir(".", .{ .iterate = true });
+    // Create an ArrayList to hold string slices for file names
+    var files = std.ArrayList([]const u8).init(allocator);
+    defer files.deinit();
+
+    var dir = try cwd.openDir(to_list, .{ .iterate = true });
     defer dir.close();
 
     try stdout.print(" # Name\n", .{});
@@ -19,7 +24,13 @@ pub fn main() !void {
             std.fs.File.Kind.sym_link => "\x1b[33m",
             else => "\x1b[34m",
         };
-        try stdout.print("=> {s}{s}\x1b[0m\n", .{color, entry.name});
+        //This line has an error:
+        const formatted_str = try std.fmt.format("=> {s}{s}\x1b[0m\n", .{color, entry.name});
+        try files.append(formatted_str);
+    }
+    std.sort.sort(files, std.sort.Comparator([]const u8).lexical);
+    for (files) |item| {
+        try stdout.print("{}\n", .{item});
     }
     try stdout.print("\n", .{});
     try bw.flush();
