@@ -14,11 +14,12 @@ pub fn main() !void {
 
     var iterator = dir.iterate();
     while (try iterator.next()) |entry| {
-        switch (entry.kind) {
-            std.fs.File.Kind.directory => try stdout.print("=> \x1b[32m{s}\x1b[0m\n", .{entry.name}),
-            std.fs.File.Kind.sym_link => try stdout.print("=> \x1b[33m{s}\x1b[0m\n", .{entry.name}),
-            else => try stdout.print("=> \x1b[34m{s}\x1b[0m\n", .{entry.name}),
-        }
+        const color = switch (entry.kind) {
+            std.fs.File.Kind.directory => "\x1b[32m",
+            std.fs.File.Kind.sym_link => "\x1b[33m",
+            else => "\x1b[34m",
+        };
+        try stdout.print("=> {s}{s}\x1b[0m\n", .{color, entry.name});
     }
     try stdout.print("\n", .{});
     try bw.flush();
