@@ -1,4 +1,3 @@
-import gleam/int
 import gleam/io
 import gleam/string
 import gleam_community/ansi
