@@ -6,6 +6,7 @@ import gleam/io
 import gleam/list
 import gleam/string
 import gleam_community/ansi
+import gleam/erlang/os
 
 pub fn main() {
   // Start the interactive loop with an initial exit code
@@ -40,9 +41,14 @@ fn loop(error_code: String) {
   // Generate error codes
   let error_code: Int = case command {
     "ls" | "exit" -> 0
+    "" -> 2
     _ -> 1
   }
 
+  case command {
+    "ls" -> io.print("Call ls.zig\n")
+    _ -> io.print("")
+  }
   // Handle any errorsc
   case error_code {
     0 -> io.print("")
@@ -54,6 +60,7 @@ fn loop(error_code: String) {
     0 -> ansi.green(int.to_string(error_code))
     _ -> ansi.red(int.to_string(error_code))
   }
+
 
   // Check if exit was called and
   // put the result into a boolean

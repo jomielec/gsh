@@ -6,11 +6,13 @@ import gleam_community/colour.{type Color}
 pub type Error {
   InvalidCommand
   UnknownError
+  BlankCommand
 }
 
 pub fn handle_error(command: String, error_code: Int) {
   // Handle error codes
   let error_type: Error = case error_code {
+    2 -> BlankCommand
     1 -> InvalidCommand
     _ -> UnknownError
   }
@@ -18,6 +20,11 @@ pub fn handle_error(command: String, error_code: Int) {
   let error_message = case error_type {
     InvalidCommand -> "Invalid Command"
     UnknownError -> "Unknown Error"
+    BlankCommand -> "Blank Command"
+  }
+  let command = case command {
+    "" -> "newline char"
+    _ -> command
   }
   // Generate and print error message
   io.println(generate_error_message(
