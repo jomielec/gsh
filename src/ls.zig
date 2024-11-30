@@ -19,7 +19,7 @@ pub fn main() !void {
             std.fs.File.Kind.sym_link => "\x1b[33m",
             else => "\x1b[34m",
         };
-        try stdout.print("=> {s}{s}\x1b[0m\n", .{color, entry.name});
+        try stdout.print("=> {s}{s}\x1b[0m\n", .{ color, entry.name });
     }
     try stdout.print("\n", .{});
     try bw.flush();
