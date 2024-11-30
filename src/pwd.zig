@@ -13,6 +13,7 @@ pub fn main() !void {
     var buffer: [100]u8 = undefined;
     try file.seekTo(0);
     const bytes_read = try file.readAll(&buffer);
-
+    
+    //FIXME:
     try expect(eql(u8, buffer[0..bytes_read], "Hello File!"));
 }
