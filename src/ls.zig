@@ -1,29 +1,86 @@
 const std = @import("std");
 
 pub fn main() !void {
+    var file = try std.fs.cwd().openFile("current_dir.txt", .{});
+    defer file.close();
+
+    var reader = file.reader();
+    var buf: [1024]u8 = undefined;
+    var last_line: ?[]const u8 = null; // Nullable type to hold the last line
+
+    // Read through the file and store the last line
+    while (try reader.readUntilDelimiterOrEof(buf[0..], '\n')) |line| {
+        last_line = line;
+    }
+
+    // If last_line is null, set it to a default directory
+    const current_dir = last_line orelse "default_directory"; // orelse ensures the type remains consistent
+
     const stdout_file = std.io.getStdOut().writer();
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
 
     const cwd = std.fs.cwd();
 
-    var dir = try cwd.openDir(".", .{ .iterate = true });
+    // Try opening the directory, using the current directory or default directory
+    var dir = try cwd.openDir(current_dir, .{ .iterate = true });
     defer dir.close();
 
     try stdout.print(" # Name\n", .{});
 
+    // Iterate through the directory entries
     var iterator = dir.iterate();
     while (try iterator.next()) |entry| {
         const color = switch (entry.kind) {
-            std.fs.File.Kind.directory => "\x1b[32m",
-            std.fs.File.Kind.sym_link => "\x1b[33m",
-            else => "\x1b[34m",
+            std.fs.File.Kind.directory => "\x1b[32m", // Green for directories
+            std.fs.File.Kind.sym_link => "\x1b[33m", // Yellow for symlinks
+            else => "\x1b[34m", // Blue for other files
         };
         try stdout.print("=> {s}{s}\x1b[0m\n", .{ color, entry.name });
     }
+
     try stdout.print("\n", .{});
     try bw.flush();
 }
+
+// const std = @import("std");
+
+// pub fn main() !void {
+//     var file = try std.fs.cwd().openFile("current_dir.txt", .{});
+//     defer file.close();
+
+//     var reader = file.reader();
+//     var buf: [1024]u8 = undefined;
+//     var last_line: ?[]const u8 = null; // Use nullable type
+
+//     while (try reader.readUntilDelimiterOrEof(buf[0..], '\n')) |line| {
+//         last_line = line;
+//     }
+//     const current_dir = last_line;
+
+//     const stdout_file = std.io.getStdOut().writer();
+//     var bw = std.io.bufferedWriter(stdout_file);
+//     const stdout = bw.writer();
+
+//     const cwd = std.fs.cwd();
+
+//     var dir = try cwd.openDir(current_dir, .{ .iterate = true });
+//     defer dir.close();
+
+//     try stdout.print(" # Name\n", .{});
+
+//     var iterator = dir.iterate();
+//     while (try iterator.next()) |entry| {
+//         const color = switch (entry.kind) {
+//             std.fs.File.Kind.directory => "\x1b[32m",
+//             std.fs.File.Kind.sym_link => "\x1b[33m",
+//             else => "\x1b[34m",
+//         };
+//         try stdout.print("=> {s}{s}\x1b[0m\n", .{ color, entry.name });
+//     }
+//     try stdout.print("\n", .{});
+//     try bw.flush();
+// }
 
 //Version 1
 // const std = @import("std");

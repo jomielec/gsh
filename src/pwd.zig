@@ -1,19 +1,18 @@
 const std = @import("std");
 
 pub fn main() !void {
-    const file = try std.fs.cwd().createFile(
-        "junk_file.txt",
-        .{ .read = true },
-    );
+    var file = try std.fs.cwd().openFile("current_dir.txt", .{});
     defer file.close();
 
-    const bytes_written = try file.writeAll("Hello File!");
-    _ = bytes_written;
+    var reader = file.reader();
+    var buf: [1024]u8 = undefined;
+    var last_line: ?[]const u8 = null; // Use nullable type
 
-    var buffer: [100]u8 = undefined;
-    try file.seekTo(0);
-    const bytes_read = try file.readAll(&buffer);
-    
-    //FIXME:
-    try expect(eql(u8, buffer[0..bytes_read], "Hello File!"));
+    while (try reader.readUntilDelimiterOrEof(buf[0..], '\n')) |line| {
+        last_line = line;
+    }
+
+    if (last_line != null) {
+        try std.io.getStdOut().writer().print("{s}\n", .{last_line.?}); // Unwrap nullable type
+    }
 }
