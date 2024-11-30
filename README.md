@@ -1,11 +1,24 @@
 # Gleam Style sHell
 ## Contributing
-Please make sure these commands run succesfully before commiting
+Please check that your code builds by running:
 ```sh
-gleam run
+gleam build
+zig build
+```
+Please make sure your code passes test by running:
+```sh
 gleam test
-gleam format
+zig test
+```
+Please make sure your code is formated by running:
+```sh
 gleam format --check
+zig fmt --check src/*.zig
+```
+If it is not please run:
+```sh
+gleam format
+zig fmt src/*.zig
 ```
 
 <!--
