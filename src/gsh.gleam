@@ -39,7 +39,7 @@ fn loop(error_code: String) {
 
   // Generate error codes
   let error_code: Int = case command {
-    "ls" | "exit" -> 0
+    "ls" | "exit" | "clear" -> 0
     "" -> 2
     _ -> 1
   }
@@ -47,6 +47,7 @@ fn loop(error_code: String) {
   //Call the command in Zig
   case command {
     "ls" -> io.print("Call ls.zig\n")
+    "clear" -> io.print("Call clear.zig\n")
     _ -> io.print("")
   }
   // Handle any errorsc
