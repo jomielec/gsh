@@ -60,7 +60,6 @@ fn loop(error_code: String) {
     _ -> ansi.red(int.to_string(error_code))
   }
 
-
   // Check if exit was called and
   // put the result into a boolean
   let continue_loop: Bool = case command {
