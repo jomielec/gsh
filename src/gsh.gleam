@@ -44,7 +44,6 @@ fn loop(error_code: String) {
     _ -> 1
   }
 
-  //Call the command in Zig
   case command {
     "ls" -> io.print("Call ls.zig\n")
     _ -> io.print("")
