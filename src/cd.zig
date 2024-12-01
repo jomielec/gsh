@@ -31,7 +31,7 @@ const file = @import("files.zig");
 
 pub fn main() !void {
     const cwd = std.fs.cwd();
-    const dir_name = "Test/User";
+    const dir_name = getArgs()[1];
 
     const result = cwd.openDir(dir_name, .{});
 
@@ -51,4 +51,14 @@ pub fn main() !void {
             else => std.debug.print("An unexpected error occurred: {}\n", .{err}),
         }
     }
+}
+
+pub fn getArgs() []const []const u8 {
+    const allocator = std.heap.page_allocator;
+    const args = std.process.argsAlloc(allocator) catch {
+        std.debug.print("Error: Failed to retrieve arguments\n", .{});
+        return &[_][]const u8{};
+    };
+
+    return args;
 }

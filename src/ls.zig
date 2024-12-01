@@ -1,21 +1,30 @@
 const std = @import("std");
 
 pub fn main() !void {
-    var file = try std.fs.cwd().openFile("current_dir.txt", .{});
-    defer file.close();
+    // Declare current_dir outside of the if/else block to make it accessible in the whole function
+    var current_dir: []const u8 = "default_directory"; // Default value
 
-    var reader = file.reader();
-    var buf: [1024]u8 = undefined;
-    var last_line: ?[]const u8 = null; // Nullable type to hold the last line
+    if (std.mem.eql(u8, getArgs()[1], "def")) {
+        var file = try std.fs.cwd().openFile("current_dir.txt", .{});
+        defer file.close();
 
-    // Read through the file and store the last line
-    while (try reader.readUntilDelimiterOrEof(buf[0..], '\n')) |line| {
-        last_line = line;
+        var reader = file.reader();
+        var buf: [1024]u8 = undefined;
+        var last_line: ?[]const u8 = null; // Nullable type to hold the last line
+
+        // Read through the file and store the last line
+        while (try reader.readUntilDelimiterOrEof(buf[0..], '\n')) |line| {
+            last_line = line;
+        }
+
+        // If last_line is null, set it to a default directory
+        current_dir = last_line orelse "default_directory"; // orelse ensures the type remains consistent
+    } else {
+        // If "def" is not passed as argument, use the user-supplied argument
+        current_dir = getArgs()[1];
     }
 
-    // If last_line is null, set it to a default directory
-    const current_dir = last_line orelse "default_directory"; // orelse ensures the type remains consistent
-
+    // Output preparation
     const stdout_file = std.io.getStdOut().writer();
     var bw = std.io.bufferedWriter(stdout_file);
     const stdout = bw.writer();
@@ -41,6 +50,26 @@ pub fn main() !void {
 
     try stdout.print("\n", .{});
     try bw.flush();
+}
+
+/// Returns an array of command line arguments passed to the program.
+/// 
+/// This function uses `std.process.argsAlloc` to allocate memory for the arguments 
+/// and retrieves them as an array of strings. If the function fails to retrieve 
+/// the arguments, it will print an error message and return an empty array.
+///
+/// # Returns:
+/// An array of `[]const u8`, where each element represents an argument passed 
+/// to the program. An empty array is returned if there's an error retrieving the arguments.
+
+pub fn getArgs() []const []const u8 {
+    const allocator = std.heap.page_allocator;
+    const args = std.process.argsAlloc(allocator) catch {
+        std.debug.print("Error: Failed to retrieve arguments\n", .{});
+        return &[_][]const u8{};
+    };
+
+    return args;
 }
 
 // const std = @import("std");
