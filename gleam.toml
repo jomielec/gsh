@@ -12,13 +12,20 @@ version = "0.0.1"
 # For a full reference of all the available options, you can have a look at
 # https://gleam.run/writing-gleam/gleam-toml/.
 
+target = "javascript"
+
 [dependencies]
 gleam_stdlib = ">= 0.34.0 and < 2.0.0"
 gleam_erlang = ">= 0.31.0 and < 1.0.0"
+gleam_javascript = ">= 0.13.0 and < 1.0.0"
 gleam_community_ansi = ">= 1.4.1 and < 2.0.0"
-tom = ">= 1.1.0 and < 2.0.0"
-file_streams = ">= 1.2.2 and < 2.0.0"
 gleam_community_colour = ">= 1.4.1 and < 2.0.0"
+# tom = ">= 1.1.0 and < 2.0.0"
+# file_streams = ">= 1.2.2 and < 2.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"
+
+[javascript]
+typescript_declarations = true
+runtime = "deno" # or "bun"
